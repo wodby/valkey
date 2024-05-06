@@ -1,0 +1,7 @@
+tests
+.gitignore
+.valkey
+.travis.yml
+Makefile
+README.md
+release.sh

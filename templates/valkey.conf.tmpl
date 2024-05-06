@@ -1,0 +1,38 @@
+daemonize no
+pidfile /var/run/valkey/valkey.pid
+{{- if getenv "VALKEY_LOGFILE" }}
+logfile {{ getenv "VALKEY_LOGFILE" }}
+{{- end }}
+port 6379
+tcp-backlog {{ getenv "VALKEY_TCP_BACKLOG" "511" }}
+bind 0.0.0.0
+timeout {{ getenv "VALKEY_TIMEOUT" "300" }}
+tcp-keepalive {{ getenv "VALKEY_TCP_KEEPALIVE" "60" }}
+databases {{ getenv "VALKEY_DATABASES" "16" }}
+{{- if getenv "VALKEY_PASSWORD" }}
+requirepass {{ getenv "VALKEY_PASSWORD" }}
+{{- end }}
+appendonly {{ getenv "VALKEY_APPENDONLY" "no" }}
+{{- if getenv "VALKEY_SAVE_TO_DISK" }}
+dir /data
+dbfilename {{ getenv "VALKEY_DBFILENAME" "dump.rdb" }}
+{{- $saves := split (getenv "VALKEY_SAVES" "900:1/300:10/60:10000") "/" }}
+{{- range $saves }}
+{{- $save := split . ":" }}
+save {{ index $save 0 }} {{ index $save 1 }}
+{{- end }}
+{{- else }}
+save ""
+{{- end }}
+maxmemory {{ getenv "VALKEY_MAXMEMORY" "128m" }}
+maxmemory-policy {{ getenv "VALKEY_MAXMEMORY_POLICY" "allkeys-lru" }}
+maxmemory-samples {{ getenv "VALKEY_MAXMEMORY_SAMPLES" "3" }}
+list-max-ziplist-entries {{ getenv "VALKEY_LIST_MAX_ZIPLIST_ENTRIES" "512" }}
+list-max-ziplist-value {{ getenv "VALKEY_LIST_MAX_ZIPLIST_VALUE" "64" }}
+set-max-intset-entries {{ getenv "VALKEY_SET_MAX_INTSET_ENTRIES" "512" }}
+activerehashing {{ getenv "VALKEY_ACTIVE_REHASHING" "yes" }}
+lua-time-limit {{ getenv "VALKEY_LUA_TIME_LIMIT" "5000" }}
+slowlog-log-slower-than {{ getenv "VALKEY_SLOWLOG_SLOWER_THAN" "10000" }}
+slowlog-max-len {{ getenv "VALKEY_SLOWLOG_MAX_LEN" "32" }}
+latency-monitor-threshold {{ getenv "VALKEY_LATENCY_MONITOR_THRESHOLD" "0" }}
+notify-keyspace-events "{{ getenv "VALKEY_NOTIFY_KEYSPACE_EVENTS" "" }}"

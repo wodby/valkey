@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -e
+
+if [[ -n "${DEBUG}" ]]; then
+    set -x
+fi
+
+if [[ -n "${VALKEY_PASSWORD}" ]]; then
+    valkey-cli -h "${host}" -a "${VALKEY_PASSWORD}" flushall | grep -q "OK"
+else
+    valkey-cli -h "${host}" flushall | grep -q "OK"
+fi
