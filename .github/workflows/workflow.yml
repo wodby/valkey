@@ -11,10 +11,10 @@ on:
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-  VALKEY7: '7.2.5'
+  VALKEY72: '7.2.5'
 
 jobs:
-  valkey7:
+  valkey72:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -24,6 +24,6 @@ jobs:
     - uses: docker/setup-buildx-action@v1
     - uses: ./.github/actions
       with:
-        version: ${{ env.VALKEY7 }}
-        tags: 7,latest
+        version: ${{ env.VALKEY72 }}
+        tags: 7.2,latest
         platform: linux/amd64,linux/arm64
