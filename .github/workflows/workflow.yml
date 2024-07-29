@@ -25,5 +25,5 @@ jobs:
     - uses: ./.github/actions
       with:
         version: ${{ env.VALKEY72 }}
-        tags: 7.2,latest
+        tags: 7,7.2,latest
         platform: linux/amd64,linux/arm64
