@@ -1,6 +1,6 @@
 -include env_make
 
-VALKEY_VER ?= 7.2.5
+VALKEY_VER ?= 7.2.6
 
 TAG ?= $(shell echo "${VALKEY_VER}" | grep -oE '^[0-9]+\.[0-9]+')
 

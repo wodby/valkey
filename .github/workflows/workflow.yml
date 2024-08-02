@@ -11,7 +11,7 @@ on:
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-  VALKEY72: '7.2.5'
+  VALKEY72: '7.2.6'
 
 jobs:
   valkey72:
