@@ -6,7 +6,7 @@
 
 ## Docker Images
 
-❗For better reliability we release images with stability tags (`wodby/valkey:7-X.X.X`) which correspond to [git tags](https://github.com/wodby/valkey/releases). We strongly recommend using images only with stability tags. 
+❗For better reliability we release images with stability tags (`wodby/valkey:8-X.X.X`) which correspond to [git tags](https://github.com/wodby/valkey/releases). We strongly recommend using images only with stability tags. 
 
 Overview:
 
@@ -19,7 +19,8 @@ Overview:
 
 Supported tags and respective `Dockerfile` links:
 
-- `7.2`, `latest` [_(Dockerfile)_]
+- `8.0`, `8`, `latest` [_(Dockerfile)_]
+- `7.2`, `7` [_(Dockerfile)_]
 
 All images built for `linux/amd64` and `linux/arm64`
 
