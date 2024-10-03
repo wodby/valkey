@@ -23,7 +23,7 @@ jobs:
       - uses: docker/setup-buildx-action@v3
       - uses: ./.github/actions
         with:
-          version: '8.0.0'
+          version: '8.0.1'
           tags: 8.0,8,latest
           platform: linux/amd64,linux/arm64  
   valkey72:
