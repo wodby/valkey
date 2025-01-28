@@ -18,16 +18,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Docker
-        uses: docker/setup-docker-action@v4
-        with:
-          daemon-config: |
-            {
-              "debug": true,
-              "features": {
-                "containerd-snapshotter": true
-              }
-            }        
       - uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
@@ -45,16 +35,6 @@ jobs:
     runs-on: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Docker
-        uses: docker/setup-docker-action@v4
-        with:
-          daemon-config: |
-            {
-              "debug": true,
-              "features": {
-                "containerd-snapshotter": true
-              }
-            }        
       - uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
@@ -90,11 +70,9 @@ jobs:
             fi
           
             for TAG in "${TAGS[@]}"; do
-              docker manifest create wodby/valkey:$TAG \
+              docker buildx imagetools create wodby/valkey:$TAG \
                 wodby/valkey:8.0-amd64 \
                 wodby/valkey:8.0-arm64
-  
-              docker manifest push wodby/valkey:$TAG
             done
           fi
 
