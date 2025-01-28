@@ -13,7 +13,7 @@ ifneq ($(STABILITY_TAG),)
     endif
 endif
 
-PLATFORM ?= linux/amd64
+PLATFORM ?= linux/arm64
 
 .PHONY: build buildx-build buildx-build-amd64 buildx-push test push shell run start stop logs clean release
 

@@ -23,5 +23,4 @@ runs:
       set -e
       make buildx-build
       make test
-      . $GITHUB_ACTION_PATH/release.sh
     shell: bash
