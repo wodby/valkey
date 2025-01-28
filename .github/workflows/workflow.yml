@@ -70,7 +70,7 @@ jobs:
             fi
           
             for TAG in "${TAGS[@]}"; do
-              docker buildx imagetools create wodby/valkey:$TAG \
+              docker buildx imagetools create -t wodby/valkey:$TAG \
                 wodby/valkey:8.0-amd64 \
                 wodby/valkey:8.0-arm64
             done
