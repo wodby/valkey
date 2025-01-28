@@ -1,26 +1,38 @@
-name: Build
-description: Build valkey image
+name: push
+description: combine multi-arch image and push
 inputs:
   version:
     description: version
     required: true
-  tags:
-    description: image tags
-    required: true
-  platform:
-    description: docker platform
+  latest:
+    description: if tag latest
     required: false
-    default: linux/amd64
 runs:
   using: "composite"
   steps:
   - name: Build image
     env:
-      VALKEY_VER: ${{ inputs.version }}
-      TAGS: ${{ inputs.tags }}
-      PLATFORM: ${{ inputs.platform }}
+      VERSION: ${{ inputs.version }}
+      LATEST: ${{ inputs.latest }}
     run: |
-      set -e
-      make buildx-build
-      make test
+      if [[ "${GITHUB_REF}" == refs/heads/main || "${GITHUB_REF}" == refs/tags/* ]]; then      
+        minor_ver="${VERSION%.*}"
+        major_ver="${minor_ver%.*}"
+            
+        if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+          STABILITY_TAG=("${GITHUB_REF##*/}")
+          TAGS=("${minor_ver}-${STABILITY_TAG}" "${major_ver}-${STABILITY_TAG}")
+        else
+          TAGS=("${minor_ver}" "${major_ver}")
+          if [[ -n "${LATEST}" ]]; then
+            TAGS+=("latest")
+          fi
+        fi
+      
+        for TAG in "${TAGS[@]}"; do
+          docker buildx imagetools create -t wodby/valkey:$TAG \
+            wodby/valkey:${minor_ver}-amd64 \
+            wodby/valkey:${minor_ver}-arm64
+        done
+      fi
     shell: bash
