@@ -23,16 +23,14 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}      
       - uses: docker/setup-buildx-action@v3
-      - uses: ./.github/actions
-        with:
-          version: ${{ env.VALKEY80 }}
-          tags: 8.0-amd64
-          platform: linux/amd64  
-      - name: push amd64 image
+      - name: build and push
+        env:
+          VALKEY_VER: ${{ env.VALKEY80 }}
+          TAG: 8.0-amd64
+          PLATFORM: linux/amd64  
         run: |
-          docker buildx build --platform linux/amd64 \
-            -t wodby/valkey:8.0-amd64 \
-            --push .
+          make buildx-build
+          make buildx-push          
   valkey80-arm64:
     runs-on: ubuntu-24.04-arm
     steps:
@@ -42,16 +40,14 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - uses: docker/setup-buildx-action@v3
-      - uses: ./.github/actions
-        with:
-          version: ${{ env.VALKEY80 }}
-          tags: 8.0-arm64
-          platform: linux/arm64
-      - name: push arm64 image
+      - name: build and push
+        env:
+          VALKEY_VER: ${{ env.VALKEY80 }}
+          TAG: 8.0-arm64
+          PLATFORM: linux/arm64
         run: |
-          docker buildx build --platform linux/arm64 \
-            -t wodby/valkey:8.0-arm64 \
-            --push .          
+          make buildx-build
+          make buildx-push          
   valkey80:
     runs-on: ubuntu-latest
     needs:
@@ -69,7 +65,8 @@ jobs:
             TAGS=("8.0" "8" "latest")
             
             if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
-              TAGS+=("${GITHUB_REF##*/}")
+              STABILITY_TAG=("${GITHUB_REF##*/}")
+              TAGS=("8.0-${STABILITY_TAG}" "8-${STABILITY_TAG}")
             fi
           
             for TAG in "${TAGS[@]}"; do
