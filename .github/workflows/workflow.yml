@@ -71,6 +71,9 @@ jobs:
             if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
               TAGS+=("${GITHUB_REF##*/}")
             fi
+          
+            docker pull wodby/valkey:80-amd64
+            docker pull wodby/valkey:80-arm64
   
             for TAG in "${TAGS[@]}"; do
               docker manifest create wodby/valkey:$TAG \
