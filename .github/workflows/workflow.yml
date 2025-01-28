@@ -10,18 +10,16 @@ on:
 
 env:
   VALKEY80: '8.0.2'
-  VALKEY72: '7.2.8'
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
 jobs:
-  valkey-build:
+  valkey80-build:
     strategy:
       matrix:
         platform:
           - linux/amd64
-          - linux/arm64
-        version: [ ${{ env.VALKEY80 }}, ${{ env.VALKEY72 }} ]
+          - linux/arm64    
         include:
           - platform: linux/amd64
             runner: ubuntu-24.04
@@ -39,19 +37,16 @@ jobs:
       - uses: docker/setup-buildx-action@v3
       - name: build and push
         env:
-          VALKEY_VER: ${{ matrix.version }}
-          TAG: ${{ matrix.version }}-${{ matrix.arch }}
+          VALKEY_VER: ${{ env.VALKEY80 }}
+          TAG: 8.0-${{ matrix.arch }}
           PLATFORM: ${{ matrix.platform }}  
         run: |
           make buildx-build
           make buildx-push
-  valkey-push:
+  valkey80:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        version: [ ${{ env.VALKEY80 }}, ${{ env.VALKEY72 }} ]    
     needs:
-      - valkey-build
+      - valkey80-build
     steps:
       - uses: docker/login-action@v3
         with:
@@ -60,21 +55,18 @@ jobs:
       - name: create multi-arch image
         run: |
           if [[ "${GITHUB_REF}" == refs/heads/main || "${GITHUB_REF}" == refs/tags/* ]]; then
-            VERSION=${{ matrix.version }}
-            MINOR_VER="${VERSION%.*}"
-            MAJOR_VER="${VERSION%.*}"
-            TAGS=("${MINOR_VER}" "${MAJOR_VER}" "latest")
-
+            TAGS=("8.0" "8" "latest")
+            
             if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
               STABILITY_TAG=("${GITHUB_REF##*/}")
               TAGS=("8.0-${STABILITY_TAG}" "8-${STABILITY_TAG}")
             fi
           
-#            for TAG in "${TAGS[@]}"; do
-#              docker buildx imagetools create -t wodby/valkey:$TAG \
-#                wodby/valkey:8.0-amd64 \
-#                wodby/valkey:8.0-arm64
-#            done
+            for TAG in "${TAGS[@]}"; do
+              docker buildx imagetools create -t wodby/valkey:$TAG \
+                wodby/valkey:8.0-amd64 \
+                wodby/valkey:8.0-arm64
+            done
           fi
 
 #  valkey72:
