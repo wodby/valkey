@@ -39,7 +39,7 @@ jobs:
       - name: build and push
         env:
           VALKEY_VER: ${{ env.VALKEY80 }}
-          TAG: 8.0-${{ matrix.arch }}
+          ARCH: ${{ matrix.arch }}
           PLATFORM: ${{ matrix.platform }}  
         run: |
           make buildx-build
@@ -83,7 +83,7 @@ jobs:
       - name: build and push
         env:
           VALKEY_VER: ${{ env.VALKEY72 }}
-          TAG: 7.2-${{ matrix.arch }}
+          ARCH: ${{ matrix.arch }}
           PLATFORM: ${{ matrix.platform }}  
         run: |
           make buildx-build

@@ -10,6 +10,10 @@ NAME = valkey-$(VALKEY_VER)
 
 PLATFORM ?= linux/arm64
 
+ifneq ($(ARCH),)
+	override TAG := $(TAG)-$(ARCH)
+endif
+
 .PHONY: build buildx-build buildx-push test push shell run start stop logs clean release
 
 default: build
