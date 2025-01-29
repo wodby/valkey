@@ -58,6 +58,7 @@ jobs:
         with:
           version: ${{ env.VALKEY80 }}
           latest: true
+          latest_major: true
 
   valkey72-build:
     strategy:
@@ -101,3 +102,4 @@ jobs:
       - uses: ./.github/actions
         with:
           version: ${{ env.VALKEY72 }}
+          latest_major: true
