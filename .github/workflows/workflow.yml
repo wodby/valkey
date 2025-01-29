@@ -101,4 +101,3 @@ jobs:
       - uses: ./.github/actions
         with:
           version: ${{ env.VALKEY72 }}
-          latest: false
