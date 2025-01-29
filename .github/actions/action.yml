@@ -29,8 +29,8 @@ runs:
           fi
         fi
       
-        for TAG in "${tags[@]}"; do
-          TAG=${TAG} make buildx-imagetools-create
+        for tag in "${tags[@]}"; do
+          TAG=${tag} make buildx-imagetools-create
         done
       fi
     shell: bash
