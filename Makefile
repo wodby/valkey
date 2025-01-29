@@ -1,8 +1,9 @@
 -include env_make
 
 VALKEY_VER ?= 8.0.2
+VALKEY_VER_MINOR = $(shell echo "${VALKEY_VER}" | grep -oE '^[0-9]+\.[0-9]+')
 
-TAG ?= $(shell echo "${VALKEY_VER}" | grep -oE '^[0-9]+\.[0-9]+')
+TAG ?= $(VALKEY_VER_MINOR)
 
 REPO = wodby/valkey
 NAME = valkey-$(VALKEY_VER)
@@ -27,6 +28,12 @@ buildx-push:
 	docker buildx build --platform $(PLATFORM) --push -t $(REPO):$(TAG) \
 		--build-arg VALKEY_VER=$(VALKEY_VER) \
 		./
+
+buildx-imagetools-create:
+	docker buildx imagetools create -t $(REPO):$(TAG) \
+				$(REPO):$(VALKEY_VER_MINOR)-amd64 \
+				$(REPO):$(VALKEY_VER_MINOR)-arm64
+.PHONY: buildx-imagetools-create
 
 test:
 	cd ./tests && IMAGE=$(REPO):$(TAG) NAME=$(NAME) ./run.sh

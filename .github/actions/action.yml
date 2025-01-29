@@ -18,21 +18,19 @@ runs:
       if [[ "${GITHUB_REF}" == refs/heads/main || "${GITHUB_REF}" == refs/tags/* ]]; then      
         minor_ver="${VERSION%.*}"
         major_ver="${minor_ver%.*}"
-            
+
+        tags=("${minor_ver}" "${major_ver}")
         if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
-          STABILITY_TAG=("${GITHUB_REF##*/}")
-          TAGS=("${minor_ver}-${STABILITY_TAG}" "${major_ver}-${STABILITY_TAG}")
-        else
-          TAGS=("${minor_ver}" "${major_ver}")
+          stability_tag=("${GITHUB_REF##*/}")
+          tags=("${minor_ver}-${stability_tag}" "${major_ver}-${stability_tag}")
+        else          
           if [[ -n "${LATEST}" ]]; then
-            TAGS+=("latest")
+            tags+=("latest")
           fi
         fi
       
-        for TAG in "${TAGS[@]}"; do
-          docker buildx imagetools create -t wodby/valkey:$TAG \
-            wodby/valkey:${minor_ver}-amd64 \
-            wodby/valkey:${minor_ver}-arm64
+        for TAG in "${tags[@]}"; do
+          TAG=${TAG} make buildx-imagetools-create
         done
       fi
     shell: bash
