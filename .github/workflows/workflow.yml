@@ -43,6 +43,7 @@ jobs:
           PLATFORM: ${{ matrix.platform }}  
         run: |
           make buildx-build
+          make test
           make buildx-push
   valkey80-push:
     runs-on: ubuntu-latest
@@ -88,6 +89,7 @@ jobs:
           PLATFORM: ${{ matrix.platform }}  
         run: |
           make buildx-build
+          make test
           make buildx-push
   valkey72-push:
     runs-on: ubuntu-latest
