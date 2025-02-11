@@ -26,6 +26,7 @@ build:
 buildx-build:
 	docker buildx build --platform $(PLATFORM) -t $(REPO):$(TAG) \
 		--build-arg VALKEY_VER=$(VALKEY_VER) \
+		--load \
 		./
 
 buildx-push:
