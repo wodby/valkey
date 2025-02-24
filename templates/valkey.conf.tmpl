@@ -12,8 +12,9 @@ databases {{ getenv "VALKEY_DATABASES" "16" }}
 {{- if getenv "VALKEY_PASSWORD" }}
 requirepass {{ getenv "VALKEY_PASSWORD" }}
 {{- end }}
-appendonly {{ getenv "VALKEY_APPENDONLY" "no" }}
 {{- if getenv "VALKEY_SAVE_TO_DISK" }}
+appendonly {{ getenv "REDIS_APPENDONLY" "no" }}
+appendfsync {{ getenv "REDIS_APPENDFSYNC" "everysec" }}
 dir /data
 dbfilename {{ getenv "VALKEY_DBFILENAME" "dump.rdb" }}
 {{- $saves := split (getenv "VALKEY_SAVES" "900:1/300:10/60:10000") "/" }}
