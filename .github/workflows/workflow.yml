@@ -9,7 +9,7 @@ on:
     - '*'
 
 env:
-  VALKEY80: '8.0.3'
+  VALKEY80: '8.0.4'
   VALKEY72: '7.2.9'
 
 jobs:
