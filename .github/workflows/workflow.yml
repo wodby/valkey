@@ -3,61 +3,38 @@ name: Build docker image
 on:
   push:
     branches:
-    - main
+      - main
 
     tags:
-    - '*'
+      - '*'
 
 env:
+  VALKEY81: '8.1.4'
   VALKEY80: '8.0.6'
   VALKEY72: '7.2.11'
 
 jobs:
-  valkey80-build:
-    strategy:
-      matrix:
-        arch:
-          - amd64
-          - arm64
-        include:
-          - arch: amd64
-            runner: ubuntu-24.04
-          - arch: arm64
-            runner: ubuntu-24.04-arm
-    runs-on: ${{ matrix.runner }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}      
-      - name: build and push
-        env:
-          VALKEY_VER: ${{ env.VALKEY80 }}
-          ARCH: ${{ matrix.arch }}
-        run: |
-          make
-          make test
-          make push
-  valkey80-push:
+  setup:
     runs-on: ubuntu-latest
-    needs:
-      - valkey80-build
+    outputs:
+      valkey-versions: ${{ steps.set-matrix.outputs.valkey-versions }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      - uses: ./.github/actions
-        with:
-          version: ${{ env.VALKEY80 }}
-          latest: true
-          latest_major: true
+      - id: set-matrix
+        run: |
+          cat << 'EOF' > versions.json
+          [
+            {"key": "valkey81", "version": "${{ env.VALKEY81 }}", "latest": true, "latest_major": true},
+            {"key": "valkey80", "version": "${{ env.VALKEY80 }}", "latest": false, "latest_major": false},
+            {"key": "valkey72", "version": "${{ env.VALKEY72 }}", "latest": false, "latest_major": true}
+          ]
+          EOF
+          echo "valkey-versions=$(cat versions.json | jq -c .)" >> $GITHUB_OUTPUT
 
-  valkey72-build:
+  build:
+    needs: setup
     strategy:
       matrix:
+        valkey: ${{ fromJson(needs.setup.outputs.valkey-versions) }}
         arch:
           - amd64
           - arm64
@@ -68,30 +45,36 @@ jobs:
             runner: ubuntu-24.04-arm
     runs-on: ${{ matrix.runner }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}      
+          password: ${{ secrets.DOCKER_PASSWORD }}
       - name: build and push
         env:
-          VALKEY_VER: ${{ env.VALKEY72 }}
+          VALKEY_VER: ${{ matrix.valkey.version }}
           ARCH: ${{ matrix.arch }}
         run: |
           make
           make test
           make push
-  valkey72-push:
+
+  push:
     runs-on: ubuntu-latest
     needs:
-      - valkey72-build
+      - setup
+      - build
+    strategy:
+      matrix:
+        valkey: ${{ fromJson(needs.setup.outputs.valkey-versions) }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - uses: ./.github/actions
         with:
-          version: ${{ env.VALKEY72 }}
-          latest_major: true
+          version: ${{ matrix.valkey.version }}
+          latest: ${{ matrix.valkey.latest }}
+          latest_major: ${{ matrix.valkey.latest_major }}

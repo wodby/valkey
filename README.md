@@ -6,20 +6,22 @@
 
 ## Docker Images
 
-❗For better reliability we release images with stability tags (`wodby/valkey:8-X.X.X`) which correspond to [git tags](https://github.com/wodby/valkey/releases). We strongly recommend using images only with stability tags. 
+❗For better reliability we release images with stability tags (
+`wodby/valkey:8-X.X.X`) which correspond to [git tags](https://github.com/wodby/valkey/releases). We strongly recommend using images only with stability tags.
 
 Overview:
 
 - All images based on Alpine Linux
 - Base image: [valkey/valkey](https://github.com/valkey-io/valkey-container)
-- [GitHub actions builds](https://github.com/wodby/valkey/actions) 
+- [GitHub actions builds](https://github.com/wodby/valkey/actions)
 - [Docker Hub](https://hub.docker.com/r/wodby/valkey)
 
 [_(Dockerfile)_]: https://github.com/wodby/valkey/tree/master/Dockerfile
 
 Supported tags and respective `Dockerfile` links:
 
-- `8.0`, `8`, `latest` [_(Dockerfile)_]
+- `8.1`, `8`, `latest` [_(Dockerfile)_]
+- `8.0` [_(Dockerfile)_]
 - `7.2`, `7` [_(Dockerfile)_]
 
 All images built for `linux/amd64` and `linux/arm64`
@@ -55,6 +57,7 @@ All images built for `linux/amd64` and `linux/arm64`
 ## Orchestration Actions
 
 Usage:
+
 ```
 make COMMAND [params ...]
  
