@@ -1,4 +1,4 @@
-ARG VALKEY_VER=8.0.0
+ARG VALKEY_VER=9.0.0
 
 FROM valkey/valkey:${VALKEY_VER}-alpine
 
