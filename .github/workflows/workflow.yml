@@ -24,10 +24,10 @@ jobs:
         run: |
           cat << 'EOF' > versions.json
           [
-            {"key": "valkey90", "version": "${{ env.VALKEY90 }}", "latest": true, "latest_major": true},
-            {"key": "valkey81", "version": "${{ env.VALKEY81 }}", "latest": false, "latest_major": true},
-            {"key": "valkey80", "version": "${{ env.VALKEY80 }}", "latest": false, "latest_major": false},
-            {"key": "valkey72", "version": "${{ env.VALKEY72 }}", "latest": false, "latest_major": true}
+            {"key": "valkey90", "version": "${{ env.VALKEY90 }}", "latest": "1", "latest_major": "1"},
+            {"key": "valkey81", "version": "${{ env.VALKEY81 }}", "latest": "", "latest_major": "1"},
+            {"key": "valkey80", "version": "${{ env.VALKEY80 }}", "latest": "", "latest_major": ""},
+            {"key": "valkey72", "version": "${{ env.VALKEY72 }}", "latest": "", "latest_major": "1"}
           ]
           EOF
           echo "valkey-versions=$(cat versions.json | jq -c .)" >> $GITHUB_OUTPUT
