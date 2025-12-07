@@ -25,6 +25,6 @@ if [[ "${GITHUB_REF}" == refs/heads/main || "${GITHUB_REF}" == refs/tags/* ]]; t
   fi
 
   for tag in "${tags[@]}"; do
-    make buildx-imagetools-create TAG=${tag}
+    make buildx-imagetools-create IMAGETOOLS_TAG=${tag}
   done
 fi
