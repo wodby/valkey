@@ -9,7 +9,7 @@ on:
       - '*'
 
 env:
-  VALKEY90: '9.0.2'
+  VALKEY90: '9.0.3'
   VALKEY81: '8.1.5'
   VALKEY80: '8.0.6'
   VALKEY72: '7.2.11'
