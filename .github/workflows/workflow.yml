@@ -12,7 +12,7 @@ env:
   VALKEY90: '9.0.5'
   VALKEY81: '8.1.9'
   VALKEY80: '8.0.10'
-  VALKEY72: '7.2.13'
+  VALKEY72: '7.2.14'
 
 jobs:
   setup:
