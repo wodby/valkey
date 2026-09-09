@@ -10,7 +10,7 @@ on:
 
 env:
   VALKEY90: '9.0.6'
-  VALKEY81: '8.1.9'
+  VALKEY81: '8.1.10'
   VALKEY80: '8.0.10'
   VALKEY72: '7.2.14'
 
