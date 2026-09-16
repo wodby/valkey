@@ -7,7 +7,10 @@ ARG VALKEY_VER
 
 ENV VALKEY_VER="${VALKEY_VER}"
 
-RUN apk add --update --no-cache -t .wodby-valkey-run-deps \
+# Upgrade inherited packages even when their existing versions satisfy dependencies.
+RUN set -ex; \
+    apk upgrade --no-cache; \
+    apk add --update --no-cache -t .wodby-valkey-run-deps \
         bash \
         make \
         tzdata; \
