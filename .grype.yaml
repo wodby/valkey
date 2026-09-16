@@ -1,0 +1,9 @@
+# Fixed on the 7.2 branch in 7.2.8; the binary match only lists the 8.0 fix.
+# https://github.com/valkey-io/valkey/releases/tag/7.2.8
+# Limit this exception to the reviewed package version.
+ignore:
+  - vulnerability: CVE-2024-46981
+    package:
+      name: valkey
+      version: 7.2.14
+      type: binary
