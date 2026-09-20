@@ -1,6 +1,10 @@
+# check=skip=InvalidDefaultArgInFrom
+
+# The Makefile supplies the required digest-pinned BASE_IMAGE argument.
 ARG VALKEY_VER=9.0.0
 
-FROM valkey/valkey:${VALKEY_VER}-alpine
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
 
 ARG TARGETPLATFORM
 ARG VALKEY_VER
