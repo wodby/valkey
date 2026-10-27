@@ -25,7 +25,8 @@ Overview:
 
 Supported tags and respective `Dockerfile` links:
 
-- `9.0`, `9`, `latest` [_(Dockerfile)_]
+- `9.1`, `9`, `latest` [_(Dockerfile)_]
+- `9.0` [_(Dockerfile)_]
 - `8.1`, `8` [_(Dockerfile)_]
 - `8.0` [_(Dockerfile)_]
 - `7.2`, `7` [_(Dockerfile)_]
