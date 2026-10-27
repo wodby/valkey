@@ -11,6 +11,7 @@ on:
       - '!*-r[0-9]*'
 
 env:
+  VALKEY91: '9.1.3'
   VALKEY90: '9.0.7'
   VALKEY81: '8.1.11'
   VALKEY80: '8.0.12'
@@ -26,7 +27,8 @@ jobs:
         run: |
           cat << 'EOF' > versions.json
           [
-            {"key": "valkey90", "version": "${{ env.VALKEY90 }}", "latest": "1", "latest_major": "1"},
+            {"key": "valkey91", "version": "${{ env.VALKEY91 }}", "latest": "1", "latest_major": "1"},
+            {"key": "valkey90", "version": "${{ env.VALKEY90 }}", "latest": "", "latest_major": ""},
             {"key": "valkey81", "version": "${{ env.VALKEY81 }}", "latest": "", "latest_major": "1"},
             {"key": "valkey80", "version": "${{ env.VALKEY80 }}", "latest": "", "latest_major": ""},
             {"key": "valkey72", "version": "${{ env.VALKEY72 }}", "latest": "", "latest_major": "1"}

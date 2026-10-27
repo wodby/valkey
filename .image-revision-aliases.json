@@ -4,13 +4,26 @@
   "versions": [
     {
       "version": {
-        "env": "VALKEY90"
+        "env": "VALKEY91"
       },
       "variants": [
         {
           "short": [
             "{minor}",
             "{major}"
+          ],
+          "full": "{version}"
+        }
+      ]
+    },
+    {
+      "version": {
+        "env": "VALKEY90"
+      },
+      "variants": [
+        {
+          "short": [
+            "{minor}"
           ],
           "full": "{version}"
         }
